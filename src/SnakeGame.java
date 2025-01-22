@@ -9,8 +9,6 @@ import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -62,6 +60,9 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
     boolean isPaused;
 
     Color retro;
+    Color retroObj;
+    Color snakeColor;
+    Color foodColor;
 
 
 
@@ -100,7 +101,10 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
         gameLoop = new Timer(100, this);
         gameLoop.start();
 
-        retro = new Color(110, 135, 10);
+        retro = new Color(156, 180, 12);
+        retroObj = new Color(110, 135, 15);
+        snakeColor = Color.green;
+        foodColor = Color.red;
         isPaused = false;
 
 
@@ -142,22 +146,42 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
             */
 
         //drawing snake's head
-        g.setColor(Color.green);
-        g.fill3DRect(snakeHead.x * tileSize, snakeHead.y * tileSize, tileSize, tileSize, true);
-        
+        if (getBackground() == retro) {
+            g.setColor(retroObj);
+            g.fill3DRect(snakeHead.x * tileSize, snakeHead.y * tileSize, tileSize, tileSize, true);
+        }
+        else {
+            g.setColor(snakeColor);
+            g.fill3DRect(snakeHead.x * tileSize, snakeHead.y * tileSize, tileSize, tileSize, true);
+            
+        }
+       
 
         //drawing snake's body
         for (int i = 0; i < snakeBody.size(); i++) {
             Tile snakePart = snakeBody.get(i);
-            g.setColor(Color.green);
+            if (this.getBackground() == retro) {
+                g.setColor(retroObj);
+                g.fill3DRect(snakePart.x * tileSize, snakePart.y * tileSize, tileSize, tileSize, true);
+            }
+            else {
+            g.setColor(snakeColor);
             g.fill3DRect(snakePart.x * tileSize, snakePart.y * tileSize, tileSize, tileSize, true);
+            }
+            
         }
 
 
         //drawing the food
-        g.setColor(Color.red);
-        g.fill3DRect(food.x*tileSize, food.y*tileSize, tileSize, tileSize, true);
-
+        if (this.getBackground() == retro) {
+            g.setColor(retroObj);
+            g.fill3DRect(food.x*tileSize, food.y*tileSize, tileSize, tileSize, true);
+        }
+        else {  
+            g.setColor(foodColor);
+            g.fill3DRect(food.x*tileSize, food.y*tileSize, tileSize, tileSize, true);
+        }
+        
         //drawing the score
         g.setColor(Color.lightGray);
         g.setFont(new Font("Menlo", Font.PLAIN , 25));
@@ -343,6 +367,7 @@ public class SnakeGame extends JPanel implements ActionListener, KeyListener {
 
        if (e.getKeyCode() == (KeyEvent.VK_3) && (!gameOver)) {
         this.setBackground(retro);
+
        }
         
         
